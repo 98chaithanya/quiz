@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <body>
+        <div id="quiz"></div>
+        <button id="submit" >Submit</button>
+        <div id="result"></div>   
+       <script>
+       (function(){
+        const Quizcontainer=document.getElementById("quiz");
+           const resultContainer=document.getElementById("result");
+           const submittbutton=document.getElementById("submit");
+    
+           const myquestions=[
+        {
+        question:"who invented javascript?",
+        answers:{
+            a:"Douuglus Crockford",
+            b: "Sheryl Sandberg",
+            c: "Brendan Eich"
+        },
+        correctanswer:"c"
+        },
+        {
+            question:"which one of this is a javascript package manager?",
+            answers:{
+                a:"Node.js",
+                b:"TypeScript",
+                c:"npm",
+            },
+            correctanswer:"c"
+        },
+        {
+            question:"which tool you can use to ensure the code quality?",
+            answers:{
+                a:"Angular",
+                b:"Jquery",
+                c:"ESLint"
+            },
+            correctanswer:"c"
+        },
+        
+    ]
+           function buildQuiz(){
+               const output=[];
+               myquestions.forEach((currentquestion,questionnumber) => {
+                   const answers=[];
+                for(letter in currentquestion.answers) {
+                    answers.push(
+                        `<label>
+                            <input type="radio" name="questions${questionnumber}" value="${letter}">
+                            ${letter}:
+                            ${currentquestion.answers[letter]}<br>
+                            </label>`
+                    );
+                }
+                output.push(
+                `<div class="questions" >${currentquestion.question}</div>
+                <div class="answers">${answers.join('')}</div>`
+                );
+               }
+               );
+               Quizcontainer.innerHTML=output.join('');
+           }
+        function shawresults(){
+            const answerContainers=Quizcontainer.querySelectorAll('.answers');
+            let numcorrect=0;
+            myquestions.forEach((currentquestion,questionnumber)=>{
+            const answercontainer=answerContainers[questionnumber];
+            const selector=`input[name=question${questionnumber}]:checked`;
+            const useranswer=(answercontainer.querySelector(selector) || {}).value;
+            if(useranswer== currentquestion.correctanswer){
+                numcorrect++;
+                answerContainers[questionnumber].style.color='green';
+            }
+            else{
+                answerContainers[questionnumber].style.color='red';
+            }
+    
+            });
+            resultContainer.innerHTML=`${numcorrect}out of ${myquestions.length}`;
+            
+        }
+        buildquestion();
+        submittbutton.addEventListener("click",shawresults);
+       })();  
+       </script>
+        
+    </body>
+    </html>
